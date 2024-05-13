@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.JianshenfangxinxiDao">
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+         a.id as id
+        ,jsfname as jsfname
+        ,jsfmessage as jsfmessage
+        ,jsf_photo as jsfPhoto
+        ,jlid_types as jlidTypes
+    </sql>
+
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.JianshenfangxinxiView" >
+        SELECT
+        <include refid="Base_Column_List" />,b.jlname
+        FROM Jianshenfangxinxi  a left join jiaolianxinxi b on a.jlid_types = b.id
+        <where>
+            <if test=" params.jsfname != '' and params.jsfname != null and params.jsfname != 'null' ">
+                and a.jsfname like concat(concat('%',#{params.jsfname},'%'))
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+</mapper>

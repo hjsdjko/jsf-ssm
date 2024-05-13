@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.HuiyuanxinxiDao">
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,hyname as hyname
+        ,account as account
+        ,password as password
+        ,img_photo as imgPhoto
+        ,sex_types as sexTypes
+        ,balance as balance
+        ,role as role
+        ,hyk_types as hykTypes
+    </sql>
+
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.HuiyuanxinxiView" >
+        SELECT
+        <include refid="Base_Column_List" />,b.hykname as hykname
+        FROM Huiyuanxinxi  a left join huiyuankaleixing b on a.hyk_types = b.id
+        <where>
+            <if test=" params.hyname != '' and params.hyname != null">
+                and a.hyname like concat(concat('%',#{params.hyname},'%'))
+            </if>
+            <if test=" params.userId != '' and params.userId != null and params.role != '管理员'">
+                and a.id = #{params.userId}
+            </if>
+
+        </where>
+        order by a.id desc
+    </select>
+
+</mapper>

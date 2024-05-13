@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.KechengxinxiDao">
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+         a.id as id
+        ,week_types as weekTypes
+        ,times1 as times1
+        ,times2 as times2
+        ,kcname as kcname
+        ,message as message
+        ,jlid_types as jlidTypes
+    </sql>
+
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.KechengxinxiView" >
+        SELECT
+        <include refid="Base_Column_List" />,b.jlname
+        FROM Kechengxinxi  a left join jiaolianxinxi b on a.jlid_types = b.id
+        <where>
+            <if test=" params.weekTypes != null and params.weekTypes != '==请选择=='">
+                and a.week_types = #{params.weekTypes}
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+</mapper>
